@@ -1,18 +1,19 @@
-pipline {
+pipeline {
   agent any
   stages {
-    stage('hello') {
+    stage('Hello') {
       steps {
         echo 'Welcome to Jenkins'
       }
     }
-    satge('Build'){
+
+    stage('Build') {
       steps {
         echo 'Building...'
       }
     }
 
-    stage('test'){
+    stage('Test') {
       steps {
         echo 'Testing...'
       }
