@@ -4,9 +4,6 @@ pipeline {
     // `any` = Jenkins가 사용 가능한 아무 노드에서나 실행
     agent any
 
-    environment {
-        DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1461332292495741022/4t68TvqTE9k8PwZKLm_MaD2efajb5fGcBFfuhExPDbzpdSPCFKn_6WQ7YJK3rQRAd428"
-    }
 
     // GitHub Actions의 `on: push:` 와 같은 역할
     // → GitHub에 push 이벤트가 발생하면 이 파이프라인을 자동 실행
@@ -31,21 +28,15 @@ pipeline {
         }
     }
     post {
-            success {
-            discordSend(
-                webhookURL: "${env.DISCORD_WEBHOOK}",
-                title: "✅ 빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                result: "SUCCESS",
-                description: "작업이 성공적으로 완료되었습니다."
-            )
-        }
-        failure {
-            discordSend(
-                webhookURL: "${env.DISCORD_WEBHOOK}",
-                title: "🚨 빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                result: "FAILURE",
-                description: "에러 로그를 확인해 주세요!"
-            )
+        // 성공/실패 시 공통으로 금고에서 주소를 가져와 사용합니다.
+        always {
+            withCredentials([string(credentialsId: 'DISCORD_WEBHOOK_URL', variable: 'DISCORD_URL')]) {
+                discordSend(
+                    webhookURL: "${DISCORD_URL}",
+                    title: "빌드 결과: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    result: currentBuild.result ?: 'SUCCESS' 
+                )
+            }
         }
     }
 }
