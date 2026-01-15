@@ -26,4 +26,15 @@ pipeline {
             }
         }
     }
+    post {
+            // 빌드가 실패했을 때만 실행
+            failure {
+                discordSend(
+                    webhookURL: "https://discord.com/api/webhooks/1461332292495741022/4t68TvqTE9k8PwZKLm_MaD2efajb5fGcBFfuhExPDbzpdSPCFKn_6WQ7YJK3rQRAd428", // 본인의 디스코드 웹훅 주소
+                    title: "빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    description: "코드를 다시 확인해 주세요!",
+                    result: "FAILURE"
+                )
+            }
+
 }
