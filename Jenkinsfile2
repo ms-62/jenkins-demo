@@ -5,7 +5,7 @@ pipeline {
     agent any
 
     environment {
-        DISCORD_WEBHOOK = "https://discord.com/api/webhooks/12345/abcde"
+        DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1461332292495741022/4t68TvqTE9k8PwZKLm_MaD2efajb5fGcBFfuhExPDbzpdSPCFKn_6WQ7YJK3rQRAd428"
     }
 
     // GitHub Actions의 `on: push:` 와 같은 역할
